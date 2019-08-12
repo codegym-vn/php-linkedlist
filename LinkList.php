@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dungduong
- * Date: 10/26/2018
- * Time: 2:15 AM
- */
 
-include_once ('Node.php');
+include_once('Node.php');
 
 class LinkList
 {
@@ -32,27 +26,22 @@ class LinkList
         $link->next = $this->firstNode;
         $this->firstNode = $link;
 
-        /* If this is the first node inserted in the list
-           then set the lastNode pointer to it.
-        */
-        if($this->lastNode == NULL)
+        if ($this->lastNode == NULL) {
             $this->lastNode = $link;
+        }
 
         $this->count++;
     }
 
     public function insertLast($data)
     {
-        if($this->firstNode != NULL)
-        {
+        if ($this->firstNode != NULL) {
             $link = new Node($data);
             $this->lastNode->next = $link;
             $link->next = NULL;
             $this->lastNode = $link;
             $this->count++;
-        }
-        else
-        {
+        } else {
             $this->insertFirst($data);
         }
     }
@@ -67,11 +56,97 @@ class LinkList
         $listData = array();
         $current = $this->firstNode;
 
-        while($current != NULL)
-        {
+        while ($current != NULL) {
             array_push($listData, $current->readNode());
             $current = $current->next;
         }
         return $listData;
     }
+
+    //empty linklist
+    public function emptyList()
+    {
+        $this->firstNode = NULL;
+
+    }
+
+    //deleting a node from linklist $key is the value you want to delete
+    public function deleteNode($key)
+    {
+        $current = $this->firstNode;
+        $previous = $this->firstNode;
+
+        while ($current->data != $key) {
+            if ($current->next == NULL)
+                return NULL;
+            else {
+                $previous = $current;
+                $current = $current->next;
+            }
+        }
+
+        if ($current == $this->firstNode) {
+            if ($this->count == 1) {
+                $this->lastNode = $this->firstNode;
+            }
+            $this->firstNode = $this->firstNode->next;
+        } else {
+            if ($this->lastNode == $current) {
+                $this->lastNode = $previous;
+            }
+            $previous->next = $current->next;
+        }
+        $this->count--;
+    }
+
+    public function insert($data, $key)
+    {
+        if ($key == 0) {
+            $this->insertFirst($data);
+        } else {
+            $link = new Node($data);
+            $current = $this->firstNode;
+            $previous = $this->firstNode;
+
+            for ($i = 0; $i < $key; $i++) {
+                $previous = $current;
+                $current = $current->next;
+            }
+            $link->next = $current;
+            $previous->next = $link;
+            $this->count++;
+        }
+    }
+
+    public function find($key)
+    {
+        $current = $this->firstNode;
+        while ($current->data != $key) {
+            if ($current->next == NULL)
+                return null;
+            else
+                $current = $current->next;
+        }
+        return $current;
+    }
+
+    public function readNode($nodePos)
+    {
+        if ($nodePos <= $this->count) {
+            $current = $this->firstNode;
+            $pos = 1;
+            while ($pos != $nodePos) {
+                if ($current->next == NULL) {
+                    return null;
+                } else {
+                    $current = $current->next;
+                }
+                $pos++;
+            }
+            return $current->data;
+        } else {
+            return NULL;
+        }
+    }
+
 }

@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dungduong
- * Date: 10/26/2018
- * Time: 2:24 AM
- */
+
 
 class Node
 {
